@@ -10,7 +10,7 @@ term="kitty"
 # Directory where the drop terminal opens
 default_directory="$HOME/Documents"
 
-# Bspwm fix - xdo hide seems broken in bspwm (kill windows...)
+# Bspwm fix - `xdo hide` seems broken in bspwm (kill windows...)
 BSPWM=1
 
 #::::::::: FUNCTIONS ::::::::::::::
