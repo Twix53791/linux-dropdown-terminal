@@ -10,6 +10,9 @@ term="kitty"
 # Directory where the drop terminal opens
 default_directory="$HOME/Documents"
 
+# Bspwm fix - xdo hide seems broken in bspwm (kill windows...)
+BSPWM=1
+
 #::::::::: FUNCTIONS ::::::::::::::
 
 function help {
@@ -49,7 +52,10 @@ function spawn {
 function hide {
 	 WID=`head -n 1 $SCRATCH 2>/dev/null`
 	 [ -z "$WID" ] && exit
-	 [ `status` -eq 1 ] && xdo hide $WID
+    	if [ `status` -eq 1 ]; then
+        	[ $BSPWM = 0 ] && xdo hide $WID ||
+            		bspc node $WID -g hidden=on
+    	fi
     exit
 }
 
@@ -57,8 +63,12 @@ function hide {
 function show {
 	 WID=`head -n 1 $SCRATCH 2>/dev/null`
 	 if [ `status` -eq 0 ]; then
-	 	  xdo show $WID
-	 	  xdo activate $WID
+       		if [ $BSPWM = 0 ]; then
+            		xdo show $WID
+           		 xdo activate $WID
+        	else
+           		bspc node $WID -g hidden=off -f
+        	fi
 	 elif [ `status` -eq 2 ]; then
 	 	  spawn
 	 fi
